@@ -189,9 +189,12 @@ def get_deliver(sales_file, stock_file, on_the_way=6, mini_security_day=7, secur
         df_stock_res = df_stock[['fnsku', 'sku', 'asin', 'sellable-quantity', 'in-bound-quantity']]
         df_stock_res.columns = ['fnsku', 'sku', 'asin', '可售数量', '在途数量']
         sku_unique = df_stock_res['sku'].value_counts()[0]
+        print(sku_unique)
         df_stock_res['库存记录时间'] = dateutil.parser.parse(date.replace('PDT', '').replace('PST', '')).date()
         if sku_unique > 1:
             print('输入表格中sku列有重复，请核实')
+            print('仅支持单个站点操作，请筛选数据后重新尝试')
+            is_wrong()
         try:
             df_stock_res.set_index(keys='sku', inplace=True)
         except Exception as e:
